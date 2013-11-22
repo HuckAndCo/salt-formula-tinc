@@ -1,0 +1,4 @@
+Address = {{ salt['pillar.get']('tinc:' + network + ':hosts:' + host + ':address') }}
+Subnet = {{ salt['pillar.get']('tinc:' + network + ':hosts:' + host + ':subnet') }}
+
+{{ salt['pillar.get']('tinc:' + network + ':hosts:' + host + ':public') }}

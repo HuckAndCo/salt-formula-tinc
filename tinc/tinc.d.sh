@@ -58,12 +58,11 @@ signal_running() {
 
 check_running() {
   if [ -f "/var/run/tinc.$1.pid" ]; then
-    head -1 /var/run/tinc.$1.pid | while read pid; do
-      kill -0 $pid
-      if $?; then
-        echo " running with pid $pid"
+    head -n1 /var/run/tinc.$1.pid | while read pid; do
+      if kill -0 $pid ; then
+        echo -n " running with pid $pid"
       else
-        echo " not running"
+        echo -n " not running"
         exit -1
       fi
     done

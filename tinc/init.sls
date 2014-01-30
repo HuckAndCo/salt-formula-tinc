@@ -65,8 +65,6 @@ tinc:
     - context: { network: {{ network }} }
     - require:
       - file: /etc/tinc/{{ network }}
-    - watch_in:
-      - service: tinc
 
 /etc/tinc/{{ network }}/tinc-up:
   file.managed:
@@ -76,8 +74,6 @@ tinc:
     - context: { network: {{ network }} }
     - require:
       - file: /etc/tinc/{{ network }}
-    - watch_in:
-      - service: tinc
 
 /etc/tinc/{{ network }}/tinc-down:
   file.managed:
@@ -89,15 +85,13 @@ tinc:
       - file: /etc/tinc/{{ network }}
 
 {% for host in salt['pillar.get']('tinc:' + network + ':hosts', {}).keys() %}
-/etc/tinc/{{ network }}/hosts/{{ host }}:
+/etc/tinc/{{ network }}/hosts/{{ host | replace('-','_') }}:
   file.managed:
     - source: salt://tinc/host
     - template: jinja
     - context: { network: {{ network }}, host: {{ host }} }
     - require:
       - file: /etc/tinc/{{ network }}
-    - watch_in:
-      - service: tinc
 {% endfor %}
 
 {% endfor %}
